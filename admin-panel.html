@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XposeLast24h - Admin Panel</title>
+  <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen active">
+      <div class="login-container">
+        <div class="login-box">
+          <div class="logo-section">
+            <div class="logo-icon">𝐗</div>
+            <h1>XposeLast24h</h1>
+            <p>Admin Dashboard</p>
+          </div>
+          
+          <button id="google-login-btn" class="google-login-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Sign in with Google
+          </button>
+          
+          <div class="login-info">
+            <p>📋 Admin Panel - Manage Your News</p>
+            <ul>
+              <li>✏️ Add, Edit, Delete News</li>
+              <li>📊 View Analytics</li>
+              <li>💰 Monitor Revenue</li>
+              <li>👥 Manage Admins</li>
+              <li>🎯 Control Monetization</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </body>
+    
+    <!-- Admin Dashboard -->
+    <div id="dashboard-screen" class="screen">
+      <header class="admin-header">
+        <div class="header-left">
+          <h1>XposeLast24h Admin</h1>
+        </div>
+        <div class="header-right">
+          <div class="user-info">
+            <img id="user-avatar" src="" alt="" class="avatar">
+            <span id="user-name"></span>
+            <button id="logout-btn" class="logout-btn">Logout</button>
+          </div>
+        </div>
+      </header>
+      
+      <div class="dashboard-content">
+        <nav class="admin-nav">
+          <button class="nav-btn active" data-tab="news">
+            📰 News
+          </button>
+          <button class="nav-btn" data-tab="analytics">
+            📊 Analytics
+          </button>
+          <button class="nav-btn" data-tab="monetization">
+            💰 Monetization
+          </button>
+          <button class="nav-btn" data-tab="admins">
+            👥 Admins
+          </button>
+          <button class="nav-btn" data-tab="settings">
+            ⚙️ Settings
+          </button>
+        </nav>
+        
+        <!-- News Tab -->
+        <div id="news-tab" class="tab-content active">
+          <div class="tab-header">
+            <h2>📰 Manage News</h2>
+            <button id="add-news-btn" class="btn btn-primary">+ Add New Article</button>
+          </div>
+          
+          <!-- Add/Edit News Form -->
+          <div id="news-form-container" class="form-container" style="display:none;">
+            <div class="form-box">
+              <h3>Article Details</h3>
+              <form id="news-form">
+                <div class="form-group">
+                  <label>Title (Required) *</label>
+                  <input type="text" id="news-title" placeholder="Article headline" required>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Category *</label>
+                    <select id="news-category" required>
+                      <option value="">Select Category</option>
+                      <option value="Politics">🏛️ Politics</option>
+                      <option value="Tech">⚙️ Tech</option>
+                      <option value="Business">📈 Business</option>
+                      <option value="Sports">⚽ Sports</option>
+                      <option value="Entertainment">🎬 Entertainment</option>
+                      <option value="Health">🏥 Health</option>
+                      <option value="World">🌍 World</option>
+                      <option value="Trending">🔥 Trending</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Language *</label>
+                    <select id="news-language" required>
+                      <option value="">Select Language</option>
+                      <option value="Hindi">हिंदी - Hindi</option>
+                      <option value="English">English</option>
+                      <option value="Both">Both (हिंदी + English)</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label>Summary (Brief description) *</label>
+                  <textarea id="news-summary" placeholder="2-3 lines summary" rows="3" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label>Full Article Content *</label>
+                  <textarea id="news-content" placeholder="Complete article content..." rows="8" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label>Featured Image *</label>
+                  <input type="file" id="news-image" accept="image/*" required>
+                  <div id="image-preview" style="margin-top: 10px;"></div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Author Name *</label>
+                    <input type="text" id="news-author" placeholder="Your name" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Is Breaking News? 🔴</label>
+                    <select id="news-breaking">
+                      <option value="false">No</option>
+                      <option value="true">Yes</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label>Tags (comma-separated)</label>
+                  <input type="text" id="news-tags" placeholder="tag1, tag2, tag3">
+                </div>
+                
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-success">📤 Publish Article</button>
+                  <button type="button" id="cancel-form-btn" class="btn btn-secondary">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          
+          <!-- News List -->
+          <div id="news-list" class="news-list">
+            <div class="loading">Loading articles...</div>
+          </div>
+        </div>
+        
+        <!-- Analytics Tab -->
+        <div id="analytics-tab" class="tab-content">
+          <div class="tab-header">
+            <h2>📊 Analytics Dashboard</h2>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📰</div>
+              <div class="stat-info">
+                <h3>Total Articles</h3>
+                <p id="stat-total-articles" class="stat-value">0</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">👁️</div>
+              <div class="stat-info">
+                <h3>Total Views</h3>
+                <p id="stat-total-views" class="stat-value">0</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">❤️</div>
+              <div class="stat-info">
+                <h3>Total Likes</h3>
+                <p id="stat-total-likes" class="stat-value">0</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">💬</div>
+              <div class="stat-info">
+                <h3>Total Comments</h3>
+                <p id="stat-total-comments" class="stat-value">0</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="analytics-section">
+            <h3>📈 Top Articles</h3>
+            <div id="top-articles" class="top-articles-list">
+              <p>Loading top articles...</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Monetization Tab -->
+        <div id="monetization-tab" class="tab-content">
+          <div class="tab-header">
+            <h2>💰 Monetization Settings</h2>
+          </div>
+          
+          <div class="monetization-container">
+            <div class="money-section">
+              <h3>💵 Revenue Stats</h3>
+              <div class="revenue-grid">
+                <div class="revenue-card">
+                  <h4>Today's Earnings</h4>
+                  <p class="big-number">₹ <span id="today-earnings">0</span></p>
+                </div>
+                <div class="revenue-card">
+                  <h4>This Month</h4>
+                  <p class="big-number">₹ <span id="month-earnings">0</span></p>
+                </div>
+                <div class="revenue-card">
+                  <h4>Total Earnings</h4>
+                  <p class="big-number">₹ <span id="total-earnings">0</span></p>
+                </div>
+                <div class="revenue-card">
+                  <h4>Account Balance</h4>
+                  <p class="big-number">₹ <span id="account-balance">0</span></p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="money-section">
+              <h3>🎯 Monetization Settings</h3>
+              <form id="monetization-form">
+                <div class="form-group">
+                  <label>Google AdSense Publisher ID</label>
+                  <input type="text" id="adsense-id" placeholder="ca-pub-xxxxxxxxxxxxxxxx">
+                  <small>Get it from: https://adsense.google.com</small>
+                </div>
+                
+                <div class="form-group">
+                  <label>Enable Ads on Articles?</label>
+                  <div class="toggle-group">
+                    <input type="checkbox" id="enable-ads" checked>
+                    <label for="enable-ads">Enable Google Ads</label>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label>Sponsored Article Badge Cost (₹)</label>
+                  <input type="number" id="sponsor-cost" value="500" min="100">
+                  <small>Cost for brands to add "Sponsored" badge</small>
+                </div>
+                
+                <div class="form-group">
+                  <label>Referral Commission (%)</label>
+                  <input type="number" id="referral-commission" value="10" min="1" max="50">
+                  <small>Commission for each referral</small>
+                </div>
+                
+                <button type="submit" class="btn btn-success">💾 Save Settings</button>
+              </form>
+            </div>
+            
+            <div class="money-section">
+              <h3>📊 Earnings Breakdown</h3>
+              <div class="earnings-breakdown">
+                <div class="breakdown-item">
+                  <span>Google Ads</span>
+                  <span class="amount">₹ <span id="earnings-ads">0</span></span>
+                </div>
+                <div class="breakdown-item">
+                  <span>Sponsored Articles</span>
+                  <span class="amount">₹ <span id="earnings-sponsored">0</span></span>
+                </div>
+                <div class="breakdown-item">
+                  <span>Referral Commissions</span>
+                  <span class="amount">₹ <span id="earnings-referral">0</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Admins Tab -->
+        <div id="admins-tab" class="tab-content">
+          <div class="tab-header">
+            <h2>👥 Manage Admins</h2>
+            <button id="add-admin-btn" class="btn btn-primary">+ Add Admin</button>
+          </div>
+          
+          <div id="admins-list" class="admins-list">
+            <p>Loading admins...</p>
+          </div>
+        </div>
+        
+        <!-- Settings Tab -->
+        <div id="settings-tab" class="tab-content">
+          <div class="tab-header">
+            <h2>⚙️ Settings</h2>
+          </div>
+          
+          <div class="settings-container">
+            <div class="setting-section">
+              <h3>App Information</h3>
+              <div class="setting-item">
+                <label>App Name</label>
+                <input type="text" value="XposeLast24h" disabled>
+              </div>
+              <div class="setting-item">
+                <label>Version</label>
+                <input type="text" value="1.0.0" disabled>
+              </div>
+            </div>
+            
+            <div class="setting-section">
+              <h3>Categories</h3>
+              <div id="categories-list"></div>
+              <button id="add-category-btn" class="btn btn-secondary" style="margin-top: 10px;">+ Add Category</button>
+            </div>
+            
+            <div class="setting-section">
+              <h3>Danger Zone</h3>
+              <button id="reset-all-btn" class="btn btn-danger">🗑️ Reset All Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="module" src="admin-app.js"></script>
+</body>
+</html>
